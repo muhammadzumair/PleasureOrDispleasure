@@ -1,0 +1,1 @@
+export const CHANGE_SMILEY = 'change_smiley';

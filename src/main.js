@@ -3,8 +3,10 @@ import { StyleSheet, Text,Dimensions, View, TouchableOpacity, Image } from 'reac
 import { Smilye } from './common';
 import { StackNavigator } from 'react-navigation';
 import { VeryHappy } from './VeryHappy';
+import { connect } from 'react-redux';
+import {changeSmiley} from './actions';
 
-export default class Main extends Component{
+class Main extends Component{
     veryHappyFunc(){
 
     }
@@ -28,12 +30,12 @@ export default class Main extends Component{
         return (
             <View style={containerStyle}>
                 <View style={smilyeContainerStyle}>
-                    <Smilye onPress={() => this.props.navigation.navigate('VeryHappy')} smilyeImage= {smilyeImages.veryHappy}/>
+                    <Smilye onPress={value=>this.props.employeeUpdate({prop: 'vHappy'})} smilyeImage= {smilyeImages.veryHappy}/>
                     <Smilye onPress={() => this.props.navigation.navigate('Happy')} smilyeImage= {smilyeImages.happy}/>
                 </View>
                 <View style={smilyeContainerStyle}>
                     <Smilye onPress={() => this.props.navigation.navigate('Sad')} smilyeImage= {smilyeImages.sad}/>
-                    <Smilye onPress={() => this.props.navigation.navigate('Angry')} smilyeImage= {smilyeImages.angry}/>    
+                    <Smilye onPress={value=>this.props.changeSmiley({prop: 'vHappy'})} smilyeImage= {smilyeImages.angry}/>    
                 </View>
             </View>
         )
@@ -53,5 +55,13 @@ const styles = {
     }
 }
 
+const mapStateToProps = (state) => {
+    const {name,phone,shift} = state.employeeForm;
+    return {name,phone,shift};
+}
+
+export default connect(mapStateToProps, {
+    changeSmiley
+}) (Main);
 
   

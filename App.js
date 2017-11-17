@@ -9,6 +9,10 @@ import { Sad } from './src/Sad'
 import { Angry } from './src/Angry'
 import firebase from 'firebase';
 import { Navigation } from './src/Navigation'
+import {Provider} from 'react-redux';
+import ReduxThunk from 'redux-thunk';
+import {createStore, applyMiddleware } from 'redux';
+import reducers from './src/reducers'
 
 const {width, height} = Dimensions.get('window')
 
@@ -25,8 +29,12 @@ export default class App extends React.Component {
     firebase.initializeApp(config);
   }
   render() {
+    const store = createStore(reducers, {}, applyMiddleware(ReduxThunk))
     return (
-      <Navigation />
+      <Provider store={store}>
+        <Navigation />
+      </Provider>
+      
       // <View style={styles.container}>
       //     <View style={{ flexDirection: 'row' }}>
       //         <View style={{ width: '50%' }}>
