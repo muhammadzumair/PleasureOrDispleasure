@@ -1,18 +1,12 @@
 import React from 'react';
-import Main from './main';
-import { VeryHappy } from './VeryHappy'
-import { Happy } from './Happy'
-import { Sad } from './Sad'
-import { Angry } from './Angry';
+import Main from './components/main';
+import  SmileyResponse  from './components/SmileyResponse';
 import { StackNavigator } from 'react-navigation';
 
 export const Navigation = StackNavigator(
     {
         Main: { screen: Main },
-        VeryHappy: { screen: VeryHappy },
-        Happy: {screen: Happy},
-        Sad: {screen: Sad},
-        Angry: {screen: Angry}
+        SmileyResponse: { screen: SmileyResponse }
     },
     {
         headerMode: 'none',
@@ -23,3 +17,5 @@ export const Navigation = StackNavigator(
         
       }
 )
+
+
