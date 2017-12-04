@@ -2,11 +2,15 @@ import React,{Component} from 'react';
 import {Dimensions, TouchableOpacity, Image, View, Text} from 'react-native';
 import { Icon } from 'native-base';
 import { connect } from 'react-redux';
+import Expo from 'expo';
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const DEVICE_HEIGHT = Dimensions.get('window').height;
 
 class SmileyResponse extends Component{
+    componentDidMount(){
+        Expo.Speech.speak(this.props.audioText, {rate: 0.8})
+    }
     static navigationOptions = ({ navigation }) => ({
         title: ''
     })
@@ -68,9 +72,9 @@ const styles = {
     }
 }
 const mapStateToProps = (state) => {
-    const {image, text, iconButton, loading, mic} = state.smiley;
+    const {image, text, iconButton, loading, audioText, mic} = state.smiley;
     console.log('text: ', text)
-    return {image, text, iconButton, loading, mic};
+    return {image, text, iconButton, loading, audioText, mic};
 }
 
 export default connect(mapStateToProps, {

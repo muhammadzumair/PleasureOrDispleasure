@@ -55,7 +55,7 @@ export const happySmiley = ({nav}) => {
                 type: CHANGE_SMILEY,
                 payload:{
                     image: smilyeImages.happy,
-                    text: 'Thank You For your review, next time you will be more satisfied than now'
+                    text: 'Thank You For your review, next time you will be more satisfied than now.'
                 }
             })
             nav.navigate('SmileyResponse');       
@@ -79,7 +79,8 @@ export const sadSmiley = ({nav}) => {
                 type: CHANGE_SMILEY_MIC,
                 payload:{
                     image: smilyeImages.sad,
-                    text: 'Sorry for bad service, please tell us the reason for your disatisfaction'
+                    text: 'Sorry for bad service, please tell us the reason for your disatisfaction',
+                    audioText: 'Sorry for bad service, please tell us the reason for your disatisfaction. Tap this mic icon for your response'
                 }
             })
             nav.navigate('SmileyResponse');       
@@ -103,7 +104,8 @@ export const angrySmiley = ({nav}) => {
                 type: CHANGE_SMILEY_MIC,
                 payload:{
                     image: smilyeImages.angry,
-                    text: 'we are really sorry for your dissatisfaction, please tell us the reason for your disatisfaction'
+                    text: 'we are really sorry for your dissatisfaction, please tell us the reason for your disatisfaction',
+                    audioText: 'we are really sorry for your dissatisfaction, please tell us the reason for your disatisfaction. Tap this mic icon for your response'          
                 }
             })
             nav.navigate('SmileyResponse');       

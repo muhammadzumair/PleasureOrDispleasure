@@ -7,6 +7,7 @@ import {
 const INITIAL_STATE = {
     image: null,
     text: null,
+    audioText: null,
     iconButton: null,
     error: '',
     loading: false,
@@ -19,13 +20,15 @@ export default (state= INITIAL_STATE,action) => {
         return {
             ...state,
             image: action.payload.image,
-            text: action.payload.text
+            text: action.payload.text,
+            audioText: action.payload.text
         }
         case CHANGE_SMILEY_MIC:
         return {
             ...state,
             image: action.payload.image,
             text: action.payload.text,
+            audioText: action.payload.audioText,
             mic: true
         }
         case RESPONSE_RECORDED:
