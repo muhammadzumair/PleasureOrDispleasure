@@ -4,19 +4,20 @@ import { Navigation } from './src/Navigation'
 import {Provider} from 'react-redux';
 import ReduxThunk from 'redux-thunk';
 import {createStore, applyMiddleware } from 'redux';
-import reducers from './src/reducers'
+import reducers from './src/reducers';
+
 
 // const {width, height} = Dimensions.get('window')
 
 export default class App extends React.Component {
   componentWillMount(){
     var config = {
-      apiKey: "AIzaSyBxMOwhh25N1ybeeFPQNjueYixqLYTVZx0",
-      authDomain: "collegeinquiryagent.firebaseapp.com",
-      databaseURL: "https://collegeinquiryagent.firebaseio.com",
-      projectId: "collegeinquiryagent",
-      storageBucket: "collegeinquiryagent.appspot.com",
-      messagingSenderId: "303887614277"
+      apiKey: "AIzaSyBbcUA_DOSewEIHbS9la0uFgHFyD3uasfE",
+      authDomain: "pleasureordispleasure.firebaseapp.com",
+      databaseURL: "https://pleasureordispleasure.firebaseio.com",
+      projectId: "pleasureordispleasure",
+      storageBucket: "pleasureordispleasure.appspot.com",
+      messagingSenderId: "725505693594"
     };
     firebase.initializeApp(config);
   }

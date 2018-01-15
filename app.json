@@ -1,5 +1,13 @@
 {
   "expo": {
-    "sdkVersion": "21.0.0"
+    "sdkVersion": "21.0.0",
+    "splash": {
+      "image": "./src/assets/splash.png",
+      "resizeMode": "cover"
+    },
+    "orientation":"landscape",
+    "android": {
+      "package": "com.zumair.happyapp"
+    }
   }
 }

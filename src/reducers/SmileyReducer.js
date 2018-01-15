@@ -1,7 +1,9 @@
 import {
     CHANGE_SMILEY,
     RESPONSE_RECORDED,
-    CHANGE_SMILEY_MIC
+    CHANGE_SMILEY_MIC,
+    REASON_UPDATE,
+    SAVE_REASON
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -11,26 +13,41 @@ const INITIAL_STATE = {
     iconButton: null,
     error: '',
     loading: false,
-    mic: false
+    mic: false,
+    reason: '',
 };
 
-export default (state= INITIAL_STATE,action) => {
-    switch(action.type){
+export default (state = INITIAL_STATE, action) => {
+    switch (action.type) {
+        case REASON_UPDATE:
+            return {
+                ...state,
+                [action.payload.prop]: action.payload.value
+            }
+        case SAVE_REASON:
+            return {
+                ...state,
+                text: action.payload.text,
+                audioText: action.payload.text,
+                reason: '',
+                mic: false
+
+            }
         case CHANGE_SMILEY:
-        return {
-            ...state,
-            image: action.payload.image,
-            text: action.payload.text,
-            audioText: action.payload.text
-        }
+            return {
+                ...state,
+                image: action.payload.image,
+                text: action.payload.text,
+                audioText: action.payload.text
+            }
         case CHANGE_SMILEY_MIC:
-        return {
-            ...state,
-            image: action.payload.image,
-            text: action.payload.text,
-            audioText: action.payload.audioText,
-            mic: true
-        }
+            return {
+                ...state,
+                image: action.payload.image,
+                text: action.payload.text,
+                audioText: action.payload.audioText,
+                mic: true
+            }
         case RESPONSE_RECORDED:
             return {
                 ...state,
@@ -38,7 +55,7 @@ export default (state= INITIAL_STATE,action) => {
                 text: action.payload.text,
                 iconButton: action.payload.iconButton
             }
-        default: 
+        default:
             return state;
     }
 }

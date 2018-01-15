@@ -3,21 +3,53 @@ import firebase from 'firebase';
 import {
     CHANGE_SMILEY,
     RESPONSE_RECORDED,
-    CHANGE_SMILEY_MIC
+    CHANGE_SMILEY_MIC,
+    REASON_UPDATE,
+    SAVE_REASON
 }
 from './types'
 import { NavigationActions } from 'react-navigation';
 
 const smilyeImages = {
-    veryHappy: require('../assets/vhappy.png'),
-    happy: require('../assets/happy.png'),
-    sad: require('../assets/sad.png'),
-    angry: require('../assets/angry.png'),
+    veryHappy: require('../assets/veryHappy.gif'),
+    happy: require('../assets/happy.gif'),
+    sad: require('../assets/Sad.gif'),
+    angry: require('../assets/Angry.gif'),
+}
+
+export const reasonUpdate= ({prop, value}) => {
+    return {
+        type: REASON_UPDATE,
+        payload: {prop, value}
+
+    }
+}
+
+export const saveReason= ({prop, value}) => {
+    return (dispatch) => {
+        firebase.database().ref(`/location/reasons`)
+        .push({
+            timeStamp:firebase.database.ServerValue.TIMESTAMP,
+            reason: value
+        })
+        .catch(()=>{
+            console.log('server error')
+        })
+        .then(() => {
+            console.log('response OK')
+            dispatch({
+                type: SAVE_REASON,
+                payload:{
+                    text: 'Thank You For your Response...'
+                }
+            })      
+        });
+    }
 }
 
 export const veryHappySmiley = ({nav}) => {
     return (dispatch) => {
-        firebase.database().ref(`/response/veryHappy`)
+        firebase.database().ref(`location/response/veryHappy`)
         .push({
             timeStamp: firebase.database.ServerValue.TIMESTAMP,
             location: 'TariqRoad Branch'
@@ -41,7 +73,7 @@ export const veryHappySmiley = ({nav}) => {
 
 export const happySmiley = ({nav}) => {
     return (dispatch) => {
-        firebase.database().ref(`/response/Happy`)
+        firebase.database().ref(`location/response/Happy`)
         .push({
             timeStamp: firebase.database.ServerValue.TIMESTAMP,
             location: 'TariqRoad Branch'
@@ -65,7 +97,7 @@ export const happySmiley = ({nav}) => {
 
 export const sadSmiley = ({nav}) => {
     return (dispatch) => {
-        firebase.database().ref(`/response/Sad`)
+        firebase.database().ref(`location/response/Sad`)
         .push({
             timeStamp: firebase.database.ServerValue.TIMESTAMP,
             location: 'TariqRoad Branch'
@@ -90,7 +122,7 @@ export const sadSmiley = ({nav}) => {
 
 export const angrySmiley = ({nav}) => {
     return (dispatch) => {
-        firebase.database().ref(`/response/Angry`)
+        firebase.database().ref(`location/response/Angry`)
         .push({
             timeStamp: firebase.database.ServerValue.TIMESTAMP,
             location: 'TariqRoad Branch'
