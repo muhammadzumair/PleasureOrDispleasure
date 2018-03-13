@@ -4,7 +4,8 @@ import { Icon, Item, Input } from 'native-base';
 import { connect } from 'react-redux';
 import Expo from 'expo';
 import { KeepAwake } from 'expo';
-import { reasonUpdate, saveReason } from '../actions'
+import { reasonUpdate, saveReason } from '../actions';
+import { ReasonButton } from './sharedComponents';
 
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
@@ -13,36 +14,61 @@ const DEVICE_HEIGHT = Dimensions.get('window').height;
 class SmileyResponse extends Component {
     componentDidMount() {
         Expo.Speech.speak(this.props.audioText, { rate: 1.0 })
-        this.navigateOnTimeout();
+        // this.navigateOnTimeout();
 
     }
 
-    clear = () => {
-        Keyboard.dismiss();
-        window.clearTimeout(abc);
-        this.navigateOnTimeout();
-    }
+    // clear = () => {
+    //     Keyboard.dismiss();
+    //     window.clearTimeout(abc);
+    //     this.navigateOnTimeout();
+    // }
 
-    navigateOnTimeout = () => {
-        abc = setTimeout(() => {
-            if (this.props.reason !== '') {
-                this.navigateOnTimeout();
-            }
-            else {
-                this.props.navigation.navigate('Main')
-            }
-        }, 20000);
-    }
+    // navigateOnTimeout = () => {
+    //     abc = setTimeout(() => {
+    //         if (this.props.reason !== '') {
+    //             this.navigateOnTimeout();
+    //         }
+    //         else {
+    //             this.props.navigation.navigate('Main')
+    //         }
+    //     }, 20000);
+    // }
 
     static navigationOptions = ({ navigation }) => ({
         title: ''
     })
-    renderMic() {
-        if (this.props.mic) {
+    askReason(){
+        const reasonImages = {
+            attitude: require('../assets/attitude.png'),
+            waitingTime: require('../assets/waiting-time.png'),
+            environment: require('../assets/environment.png'),
+            comment: require('../assets/comment.png'),
+        }
+        if (this.props.reason) {
             return (
                 <View>
+                    <Text style={{
+                            fontSize:25,
+                            marginBottom:5, 
+                            alignSelf: 'center', 
+                            fontStyle:'italic', 
+                            fontWeight:'bold' }}
+                        >
+                        Reason?
+                    </Text>
+                    <View style={{ flexDirection: 'row', alignSelf:'center'}}>
+                        <ReasonButton onPress={()=>this.props.navigation.navigate('Suggestion')} iconImage={reasonImages.waitingTime} text='Waiting Time' />
+                        <ReasonButton onPress={()=>this.props.navigation.navigate('Suggestion')} iconImage={reasonImages.environment} text='Environment' />
+                    </View>
+                    <View style={{ flexDirection: 'row', alignSelf: 'center'}}>
+                        <ReasonButton onPress={()=>this.props.navigation.navigate('Suggestion')} iconImage={reasonImages.attitude} text='Attitude' />
+                        <ReasonButton onPress={()=>this.props.navigation.navigate('Comment')} iconImage={reasonImages.comment} text='Something Else' />
+                    </View>
 
-                    <Item style={{ marginTop: 20 }}>
+
+
+                    {/* <Item style={{ marginTop: 20 }}>
                         <Input
                             style={{ fontSize:20, marginRight:10 }}
                             placeholder='type your reason here..'
@@ -56,7 +82,7 @@ class SmileyResponse extends Component {
                         <TouchableOpacity>
                             <Icon style={{ fontSize: 50 }} active name='ios-mic' />
                         </TouchableOpacity>
-                    </Item>
+                    </Item> */}
 
 
 
@@ -65,17 +91,19 @@ class SmileyResponse extends Component {
         }
     }
 
-
+    
     render() {
+        // console.log("fewfefff: ", this.props.reason)
         const { containerStyle, smilyeStyle, textStyle } = styles;
         // const { smilyeImage } = this.props.navigation.state.params;
 
         return (
             // <ScrollView>
 
-            <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-                 <KeepAwake />
+            // <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+                 
                 <TouchableOpacity style={{ flex: 1 }} onPress={this.clear}>
+                    <KeepAwake />
                     <StatusBar hidden />
                     <View style={containerStyle}>
                         <Image resizeMode="contain" style={smilyeStyle}
@@ -86,12 +114,12 @@ class SmileyResponse extends Component {
                                 {this.props.text}
                             </Text>
                             <View>
-                                {this.renderMic()}
+                                {this.askReason()}
                             </View>
                         </View>
                     </View>
                 </TouchableOpacity>
-            </KeyboardAvoidingView>
+            // </KeyboardAvoidingView>
             // </ScrollView>
         );
     }
@@ -101,8 +129,9 @@ class SmileyResponse extends Component {
 const styles = {
     textStyle: {
         textAlign: 'center',
-        fontSize: 20,
-        paddingHorizontal: 10
+        fontSize: 30,
+        paddingHorizontal: 10,
+        fontWeight: 'bold'
 
     },
     smilyeStyle: {

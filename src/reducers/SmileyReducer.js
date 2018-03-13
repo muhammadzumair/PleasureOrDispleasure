@@ -1,7 +1,7 @@
 import {
     CHANGE_SMILEY,
     RESPONSE_RECORDED,
-    CHANGE_SMILEY_MIC,
+    CHANGE_SMILEY_WITH_REASON,
     REASON_UPDATE,
     SAVE_REASON
 } from '../actions/types';
@@ -13,8 +13,8 @@ const INITIAL_STATE = {
     iconButton: null,
     error: '',
     loading: false,
-    mic: false,
-    reason: '',
+    // mic: false,
+    reason: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -40,13 +40,13 @@ export default (state = INITIAL_STATE, action) => {
                 text: action.payload.text,
                 audioText: action.payload.text
             }
-        case CHANGE_SMILEY_MIC:
+        case CHANGE_SMILEY_WITH_REASON:
             return {
                 ...state,
                 image: action.payload.image,
-                text: action.payload.text,
+                // text: action.payload.text,
                 audioText: action.payload.audioText,
-                mic: true
+                reason: true
             }
         case RESPONSE_RECORDED:
             return {

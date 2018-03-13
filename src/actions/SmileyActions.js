@@ -3,7 +3,7 @@ import firebase from 'firebase';
 import {
     CHANGE_SMILEY,
     RESPONSE_RECORDED,
-    CHANGE_SMILEY_MIC,
+    CHANGE_SMILEY_WITH_REASON,
     REASON_UPDATE,
     SAVE_REASON
 }
@@ -49,6 +49,14 @@ export const saveReason= ({prop, value}) => {
 
 export const veryHappySmiley = ({nav}) => {
     return (dispatch) => {
+        dispatch({
+            type: CHANGE_SMILEY,
+            payload:{
+                image: smilyeImages.veryHappy,
+                text: 'Thank You For your review, we will make our service more better'
+            }
+        })
+        nav.navigate('SmileyResponse');
         firebase.database().ref(`location/response/veryHappy`)
         .push({
             timeStamp: firebase.database.ServerValue.TIMESTAMP,
@@ -59,20 +67,21 @@ export const veryHappySmiley = ({nav}) => {
         })
         .then(() => {
             console.log('response OK')
-            dispatch({
-                type: CHANGE_SMILEY,
-                payload:{
-                    image: smilyeImages.veryHappy,
-                    text: 'Thank You For your review, we will make our service more better'
-                }
-            })
-            nav.navigate('SmileyResponse');       
+                   
         });
     }
 }
 
 export const happySmiley = ({nav}) => {
     return (dispatch) => {
+        dispatch({
+            type: CHANGE_SMILEY,
+            payload:{
+                image: smilyeImages.happy,
+                text: 'Thank You For your review, next time you will be more satisfied than now.'
+            }
+        })
+        nav.navigate('SmileyResponse');
         firebase.database().ref(`location/response/Happy`)
         .push({
             timeStamp: firebase.database.ServerValue.TIMESTAMP,
@@ -83,20 +92,22 @@ export const happySmiley = ({nav}) => {
         })
         .then(() => {
             console.log('response OK')
-            dispatch({
-                type: CHANGE_SMILEY,
-                payload:{
-                    image: smilyeImages.happy,
-                    text: 'Thank You For your review, next time you will be more satisfied than now.'
-                }
-            })
-            nav.navigate('SmileyResponse');       
+                   
         });
     }
 }
 
 export const sadSmiley = ({nav}) => {
     return (dispatch) => {
+        dispatch({
+            type: CHANGE_SMILEY_WITH_REASON,
+            payload:{
+                image: smilyeImages.sad,
+                // text: 'Sorry for bad service, please tell us the reason for your disatisfaction',
+                audioText: 'Sorry for bad service, please tell us the reason for your disatisfaction. Tap this mic icon for your response'
+            }
+        })
+        nav.navigate('SmileyResponse');
         firebase.database().ref(`location/response/Sad`)
         .push({
             timeStamp: firebase.database.ServerValue.TIMESTAMP,
@@ -107,21 +118,22 @@ export const sadSmiley = ({nav}) => {
         })
         .then(() => {
             console.log('response OK')
-            dispatch({
-                type: CHANGE_SMILEY_MIC,
-                payload:{
-                    image: smilyeImages.sad,
-                    text: 'Sorry for bad service, please tell us the reason for your disatisfaction',
-                    audioText: 'Sorry for bad service, please tell us the reason for your disatisfaction. Tap this mic icon for your response'
-                }
-            })
-            nav.navigate('SmileyResponse');       
+                   
         });
     }
 }
 
 export const angrySmiley = ({nav}) => {
     return (dispatch) => {
+        dispatch({
+            type: CHANGE_SMILEY_WITH_REASON,
+            payload:{
+                image: smilyeImages.angry,
+                // text: 'we are really sorry for your dissatisfaction, please tell us the reason for your disatisfaction',
+                audioText: 'we are really sorry for your dissatisfaction, please tell us the reason for your disatisfaction. Tap this mic icon for your response'          
+            }
+        })
+        nav.navigate('SmileyResponse');
         firebase.database().ref(`location/response/Angry`)
         .push({
             timeStamp: firebase.database.ServerValue.TIMESTAMP,
@@ -132,15 +144,7 @@ export const angrySmiley = ({nav}) => {
         })
         .then(() => {
             console.log('response OK')
-            dispatch({
-                type: CHANGE_SMILEY_MIC,
-                payload:{
-                    image: smilyeImages.angry,
-                    text: 'we are really sorry for your dissatisfaction, please tell us the reason for your disatisfaction',
-                    audioText: 'we are really sorry for your dissatisfaction, please tell us the reason for your disatisfaction. Tap this mic icon for your response'          
-                }
-            })
-            nav.navigate('SmileyResponse');       
+                   
         });
     }
 }
