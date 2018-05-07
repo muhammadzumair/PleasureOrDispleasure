@@ -3,10 +3,7 @@ import { View, StatusBar, Text } from 'react-native';
 import { SmileyButton } from './sharedComponents'
 import { connect } from 'react-redux';
 import {
-    veryHappySmiley,
-    happySmiley,
-    sadSmiley,
-    angrySmiley
+    smileyReaction
 } from '../actions';
 import { KeepAwake } from 'expo';
 
@@ -25,16 +22,58 @@ class Main extends Component {
         }
         return (
             <View style={containerStyle}>
-                <KeepAwake />
                 <StatusBar hidden />
-                <Text style={{ fontSize:30, color: '#000066' }}>Pleasure Or Displeasure</Text>
+                <KeepAwake />
+                <Text style={{ fontSize: 30, color: '#000066' }}>Pleasure Or Displeasure</Text>
                 <View style={smilyeContainerStyle}>
-                    <SmileyButton onPress={() => this.props.veryHappySmiley({ nav: this.props.navigation })} smilyeImage={smilyeImages.veryHappy} text='Happy' />
-                    <SmileyButton onPress={() => this.props.happySmiley({ nav: this.props.navigation })} smilyeImage={smilyeImages.happy} text='Satisfaied' />
-
-
-                    <SmileyButton onPress={() => this.props.sadSmiley({ nav: this.props.navigation })} smilyeImage={smilyeImages.sad} text='Disatisfaied' />
-                    <SmileyButton onPress={() => this.props.angrySmiley({ nav: this.props.navigation })} smilyeImage={smilyeImages.angry} text='Angry' />
+                    <SmileyButton
+                        onPress={() => this.props.smileyReaction({
+                            showReason: false,
+                            nav: this.props.navigation,
+                            smiley: 'happy',
+                            image: smilyeImages.veryHappy,
+                            text: 'Thankyou for your response, we always wants our customer to be happy and more satisfied',
+                            audioText: 'Thankyou for your response, we always wants our customers to be happy and more satisfied'
+                        })}
+                        smilyeImage={smilyeImages.veryHappy}
+                        text='Happy'
+                    />
+                    <SmileyButton
+                        onPress={() => this.props.smileyReaction({
+                            showReason: false,
+                            nav: this.props.navigation,
+                            smiley: 'satisfied',
+                            image: smilyeImages.happy,
+                            text: 'Thankyou for your response, next time you will be more satisfied then now.',
+                            audioText: 'Thankyou for your response, next time you will be more satisfied then now.'
+                        })}
+                        smilyeImage={smilyeImages.happy}
+                        text='Satisfied'
+                    />
+                    <SmileyButton
+                        onPress={() => this.props.smileyReaction({
+                            showReason: true,
+                            nav: this.props.navigation,
+                            smiley: 'dissatisfied',
+                            image: smilyeImages.sad,
+                            text: '',
+                            audioText: 'Can You Please submit the reason for your dissatisfaction?'
+                        })}
+                        smilyeImage={smilyeImages.sad}
+                        text='Dissatisfied'
+                    />
+                    <SmileyButton
+                        onPress={() => this.props.smileyReaction({
+                            showReason: true,
+                            nav: this.props.navigation,
+                            smiley: 'angry',
+                            image: smilyeImages.angry,
+                            text: '',
+                            audioText: 'OOps We are really sorry for our bad service, can you please send us the reason for your dissatisfaction?'
+                        })}
+                        smilyeImage={smilyeImages.angry}
+                        text='Angry'
+                    />
                 </View>
                 <Text style={{ fontSize: 20, color: '#0066ff' }}>Please Rate Our Service!!!</Text>
             </View>
@@ -57,16 +96,12 @@ const styles = {
 }
 
 const mapStateToProps = (state) => {
-    console.log("pakistan: ", state)
     const { image, text, iconButton, loading } = state.smiley;
     return { image, text, iconButton, loading };
 }
 
 export default connect(mapStateToProps, {
-    happySmiley,
-    veryHappySmiley,
-    sadSmiley,
-    angrySmiley
+    smileyReaction
 })(Main);
 
 

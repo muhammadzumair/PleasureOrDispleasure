@@ -2,8 +2,23 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Dimensions, TouchableOpacity, Image, View, Text, Alert, StatusBar, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { ReasonButton } from './sharedComponents';
+import { saveResponse, saveReason } from '../actions';
+import Expo from 'expo';
 
 class ThankYou extends Component {
+    componentDidMount() {
+        Expo.Speech.speak('ThankYou for Your Review, we always wants our customer to be happy and more satisfied', { rate: 1.0 })
+        setTimeout(()=>{
+            this.props.saveResponse({
+                location: this.props.location,
+                smiley: this.props.smiley,
+                reason: this.props.reason,
+                comment: this.props.comment,
+                nav: this.props.navigation,
+                navKey: this.props.navKey
+            })
+        }, 10000)
+    }
     quotes(){
         const quotesArray = [
             '',
@@ -30,4 +45,12 @@ class ThankYou extends Component {
     }
 }
 
-export default ThankYou;
+const mapStateToProps = (state) => {
+    const { smiley, location, reason, comment, navKey } = state.smiley;
+    return {smiley, location, reason, comment, navKey };
+}
+
+export default connect(mapStateToProps, {
+    saveResponse,
+    saveReason
+})(ThankYou)

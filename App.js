@@ -8,7 +8,7 @@ import reducers from './src/reducers';
 // import { Font } from 'expo';
 
 // const {width, height} = Dimensions.get('window')
-
+const store = createStore(reducers, {}, applyMiddleware(ReduxThunk))
 export default class App extends React.Component {
 
   async componentDidMount() {
@@ -32,7 +32,7 @@ export default class App extends React.Component {
     firebase.initializeApp(config);
   }
   render() {
-    const store = createStore(reducers, {}, applyMiddleware(ReduxThunk))
+    
     return (
       <Provider store={store}>
         <Navigation />

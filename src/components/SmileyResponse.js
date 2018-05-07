@@ -4,7 +4,7 @@ import { Icon, Item, Input } from 'native-base';
 import { connect } from 'react-redux';
 import Expo from 'expo';
 import { KeepAwake } from 'expo';
-import { reasonUpdate, saveReason } from '../actions';
+import { saveResponse, saveReason } from '../actions';
 import { ReasonButton } from './sharedComponents';
 
 
@@ -14,56 +14,75 @@ const DEVICE_HEIGHT = Dimensions.get('window').height;
 class SmileyResponse extends Component {
     componentDidMount() {
         Expo.Speech.speak(this.props.audioText, { rate: 1.0 })
-        // this.navigateOnTimeout();
-
+        this.navigateOnTimeout();
     }
 
-    // clear = () => {
-    //     Keyboard.dismiss();
-    //     window.clearTimeout(abc);
-    //     this.navigateOnTimeout();
-    // }
+    stopTimmer = (reason, nav, navKey) => {
+        clearTimeout(timmer)
+        this.props.saveReason({ reason, nav, navKey })
+    }
 
-    // navigateOnTimeout = () => {
-    //     abc = setTimeout(() => {
-    //         if (this.props.reason !== '') {
-    //             this.navigateOnTimeout();
-    //         }
-    //         else {
-    //             this.props.navigation.navigate('Main')
-    //         }
-    //     }, 20000);
-    // }
+    restartTimmer = () => {
+        clearTimeout(timmer)
+        this.navigateOnTimeout();
+    }
 
-    static navigationOptions = ({ navigation }) => ({
-        title: ''
-    })
-    askReason(){
+    navigateOnTimeout = () => {
+        timmer = setTimeout(() => {
+            this.props.saveResponse({
+                location: this.props.location,
+                smiley: this.props.smiley,
+                reason: null,
+                comment: null,
+                nav: this.props.navigation,
+                navKey: this.props.navigation.state.key
+            })
+        }, 20000);
+    }
+
+    askReason() {
         const reasonImages = {
             attitude: require('../assets/attitude.png'),
             waitingTime: require('../assets/waiting-time.png'),
             environment: require('../assets/environment.png'),
             comment: require('../assets/comment.png'),
         }
-        if (this.props.reason) {
+        if (this.props.showReason) {
             return (
                 <View>
                     <Text style={{
-                            fontSize:25,
-                            marginBottom:5, 
-                            alignSelf: 'center', 
-                            fontStyle:'italic', 
-                            fontWeight:'bold' }}
-                        >
+                        fontSize: 25,
+                        marginBottom: 5,
+                        alignSelf: 'center',
+                        fontStyle: 'italic',
+                        fontWeight: 'bold'
+                    }}
+                    >
                         Reason?
                     </Text>
-                    <View style={{ flexDirection: 'row', alignSelf:'center'}}>
-                        <ReasonButton onPress={()=>this.props.navigation.navigate('Suggestion')} iconImage={reasonImages.waitingTime} text='Waiting Time' />
-                        <ReasonButton onPress={()=>this.props.navigation.navigate('Suggestion')} iconImage={reasonImages.environment} text='Environment' />
+                    <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                        <ReasonButton
+                            onPress={() => this.stopTimmer(reason = 'waiting-time', nav = this.props.navigation, navKey = this.props.navigation.state.key)}
+                            iconImage={reasonImages.waitingTime}
+                            text='Waiting Time'
+                        />
+                        <ReasonButton
+                            onPress={() => this.stopTimmer(reason = 'environment', nav = this.props.navigation, navKey = this.props.navigation.state.key)}
+                            iconImage={reasonImages.environment}
+                            text='Environment'
+                        />
                     </View>
-                    <View style={{ flexDirection: 'row', alignSelf: 'center'}}>
-                        <ReasonButton onPress={()=>this.props.navigation.navigate('Suggestion')} iconImage={reasonImages.attitude} text='Attitude' />
-                        <ReasonButton onPress={()=>this.props.navigation.navigate('Comment')} iconImage={reasonImages.comment} text='Something Else' />
+                    <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                        <ReasonButton
+                            onPress={() => this.stopTimmer(reason = 'attitude', nav = this.props.navigation, navKey = this.props.navigation.state.key)}
+                            iconImage={reasonImages.attitude}
+                            text='Attitude'
+                        />
+                        <ReasonButton
+                            onPress={() => this.stopTimmer(reason = 'comment', nav = this.props.navigation, navKey = this.props.navigation.state.key)}
+                            iconImage={reasonImages.comment}
+                            text='Something Else'
+                        />
                     </View>
 
 
@@ -91,7 +110,7 @@ class SmileyResponse extends Component {
         }
     }
 
-    
+
     render() {
         // console.log("fewfefff: ", this.props.reason)
         const { containerStyle, smilyeStyle, textStyle } = styles;
@@ -101,24 +120,25 @@ class SmileyResponse extends Component {
             // <ScrollView>
 
             // <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-                 
-                <TouchableOpacity style={{ flex: 1 }} onPress={this.clear}>
-                    <KeepAwake />
-                    <StatusBar hidden />
-                    <View style={containerStyle}>
-                        <Image resizeMode="contain" style={smilyeStyle}
-                            source={this.props.image}
-                        />
-                        <View style={{ width: "50%" }}>
-                            <Text style={textStyle}>
-                                {this.props.text}
-                            </Text>
-                            <View>
-                                {this.askReason()}
-                            </View>
+
+            <TouchableOpacity style={{ flex: 1 }} onPress={this.restartTimmer}>
+                <KeepAwake />
+                <StatusBar hidden />
+                <View style={containerStyle}>
+                    <Image resizeMode="contain" style={smilyeStyle}
+                        source={this.props.image}
+                    />
+                    <View style={{ width: "50%" }}>
+                        <Text style={textStyle}>
+                            {this.props.text}
+                        </Text>
+
+                        <View>
+                            {this.askReason()}
                         </View>
                     </View>
-                </TouchableOpacity>
+                </View>
+            </TouchableOpacity>
             // </KeyboardAvoidingView>
             // </ScrollView>
         );
@@ -131,7 +151,7 @@ const styles = {
         textAlign: 'center',
         fontSize: 30,
         paddingHorizontal: 10,
-        fontWeight: 'bold'
+        
 
     },
     smilyeStyle: {
@@ -148,12 +168,12 @@ const styles = {
     }
 }
 const mapStateToProps = (state) => {
-    const { image, text, iconButton, loading, audioText, mic, reason, thankYouText } = state.smiley;
-    return { image, text, iconButton, loading, audioText, mic, reason, thankYouText };
+    const { smiley, location, showReason, image, text, iconButton, loading, audioText, mic, reason, thankYouText } = state.smiley;
+    return { smiley, location, showReason, image, text, iconButton, loading, audioText, mic, reason, thankYouText };
 }
 
 export default connect(mapStateToProps, {
-    reasonUpdate,
+    saveResponse,
     saveReason
 })(SmileyResponse);
 
